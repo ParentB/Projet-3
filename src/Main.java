@@ -9,6 +9,7 @@ public class Main {
 		boolean fin = false ;
 		ArrayList <Integer> tab = new ArrayList <Integer>() ;
 		int taille = 4;
+		int finM = -1;
 		
 		
 		IaMasterplus master = new IaMasterplus();
@@ -22,7 +23,8 @@ public class Main {
 			
 			Main.Saisi(tab,taille);
 			
-			fin = master.setReponse(tab);
+			finM = master.setReponseResult(tab);
+			System.out.println("\n\t "+ finM);
 				
 		}
 		

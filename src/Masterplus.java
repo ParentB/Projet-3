@@ -46,6 +46,7 @@ public class Masterplus extends Master {
 	
 public boolean setReponse (ArrayList <Integer> tab) {
 	
+	
 	return SetRep(code,tab,taille,admin);
 		
  

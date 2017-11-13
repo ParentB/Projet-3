@@ -9,8 +9,10 @@ public class IaMasterplus extends Masterplus {
 	IaMasterplus(){
 		super();
 		CodeAlea(codeia,taille, possi);
+		System.out.println("\n\t"+ possi+ " "+ possi/2+ " "+ possi%2);
 		for(int i =0 ; i<taille; i++){
 			memia.add( possi/2 );
+			System.out.println("\n\t"+ memia.get(i));
 			
 		}
 	}
@@ -35,10 +37,31 @@ public class IaMasterplus extends Masterplus {
 	
 	
 	
-	public boolean setReponse (ArrayList <Integer> tab) {
+	public int setReponseResult (ArrayList <Integer> tab) {
 		
-		return SetRep(code,tab,taille,admin);
-		//return SetRepIa(codeia,tab,memia,taille,possi,nbTour,true);
+		boolean verifJ;
+		boolean verifI = false;
+		int result =0;
+		String str;
+		nbTour = nbTour +1 ;
+		System.out.println("\n\t tour" + nbTour);
+		
+		verifJ= SetRep(code,tab,taille,admin);
+		str = SetRepIa(codeia,memia,taille);
+		
+		memia = Dicho(str,memia,nbTour,possi);
+		
+		if(str =="====") 
+			verifI = true;
+		
+		if(verifI && verifJ)
+			result =1 ;
+		else if (verifJ)
+			result = 2;
+		else
+			result =0;
+		
+		return result;
 			
 	 
 		}
@@ -47,9 +70,9 @@ public class IaMasterplus extends Masterplus {
 	
 	
 	
-	/*static boolean SetRepIa(ArrayList <Integer> tab1,ArrayList <Integer> tab2,ArrayList <Integer> mem,int pTaille,int pPossi,int tour,boolean pAdmin) {
+	static String SetRepIa(ArrayList <Integer> tab1,ArrayList <Integer> tab2,int pTaille) {
 		
-		boolean verif =false;
+		
 		String inputIa ="";
 		
 			System.out.println("\n\t Votre code :");
@@ -61,10 +84,9 @@ public class IaMasterplus extends Masterplus {
 			
 			System.out.println("\n\tMauvaise entrée ");
 			
-			return verif;
+			return "";
 			
 		}
-		tour= tour +1 ;
 		System.out.println("\n\tProposition de l'IA : ");
 			
 		for(int i=0 ;i<pTaille;i++) {
@@ -72,7 +94,7 @@ public class IaMasterplus extends Masterplus {
 			}
 			
 			System.out.print(" -> Reponse : ");
-			verif = true ;
+			
 			
 			for(int i = 0; i < pTaille; i++){ 
 				if (tab1.get(i)==tab2.get(i)) {
@@ -82,42 +104,44 @@ public class IaMasterplus extends Masterplus {
 				else if(tab1.get(i)<tab2.get(i)) {
 					System.out.print("+");
 					inputIa = inputIa +"+";
-					verif = false;
+					
 				}
 				else if(tab1.get(i)>tab2.get(i)) {
 					System.out.print("-");
 					inputIa = inputIa +"-" ;
-					verif = false;
+					
 				}	
 			}
 			
-			Dicho(inputIa, mem, tour, pPossi);
-		return verif;
+			
+		return inputIa;
 		
-	}*/
+	}
 	
 	
 	
 	
 	
 	
-	/*static void Dicho(String str, ArrayList <Integer> tab, int tour, int pPossi ) {
+	static ArrayList <Integer> Dicho(String str, ArrayList <Integer> tab, int tour, int pPossi ) {
 		
 		for(int i = 0; i<str.length();i++) {
 			
-			if( str.charAt(i) == '+') {
+			if( str.charAt(i) == '-') {
 				
-				tab.set(i, (int) ( tab.get(i) + pPossi / Math.pow(( double)pPossi, (double)tour )));
+				tab.set(i, (int) ( tab.get(i) + (pPossi / Math.pow(( double)pPossi, (double)tour)) + (pPossi / Math.pow(( double)pPossi, (double)tour))%2 ));
 				
 			}
 			
-			else if (str.charAt(i) == '-') {
+			else if (str.charAt(i) == '+') {
 				
-				tab.set(i, (int) ( tab.get(i) - pPossi / Math.pow(( double)pPossi, (double)tour )));
+				tab.set(i, (int) ( tab.get(i) -( pPossi / Math.pow(( double)pPossi, (double)tour)) - (pPossi % Math.pow(( double)pPossi, (double)tour))%2));
 				
 			}
 		}
-	}*/
+		
+		return tab;
+	}
 
 	
 
