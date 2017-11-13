@@ -11,7 +11,7 @@ public class Main {
 		int taille = 4;
 		
 		
-		Mastermind master = new Mastermind();
+		IaMasterplus master = new IaMasterplus();
 		
 		tab.add(1);
 		tab.add(1);

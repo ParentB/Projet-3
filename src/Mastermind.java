@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Mastermind {
+public class Mastermind extends Master {
 	
 	protected boolean admin ;
 	protected ArrayList <Integer> code = new ArrayList <Integer>() ;
@@ -16,7 +16,7 @@ public class Mastermind {
 		possi = 4;
 		
 		for(int i = 0;i <taille; i++) {
-			code.add( (int)( Math.random()*(possi + 1) ));
+			code.add( (int)( Math.random()*(possi-1 + 1) ));
 			tri.add(true);
 		}	
 	}
@@ -111,14 +111,16 @@ public boolean setReponse (ArrayList <Integer> tab) {
 			
 			for(int j = 0; j < taille; j++){ 
 				for(int i = 0; i < taille; i++){ 
-					if (code.get(i)==tab.get(j) && tri.get(i)) {
+					if (code.get(i)==tab.get(j) && tri.get(j)) {
 						mal = mal + 1;
-						tri.set(i, false);
-						verif = false;
+						tri.set(j, false);
 					}
 				
 				}
+				
 			}
+			if(trouv!= taille)
+				verif = false;
 				
 			for(int i = 0; i < taille; i++){ 
 				
@@ -130,6 +132,14 @@ public boolean setReponse (ArrayList <Integer> tab) {
 		return verif;
  
 	}
+
+static void CodeAlea(ArrayList <Integer> tab,int taille ,int  pPossi) {
+	
+	for(int i = 0;i <taille; i++) {
+		tab.add( (int)( Math.random()*(pPossi -1 + 1) ));
+	}	
+	
+}
 
 }
 
