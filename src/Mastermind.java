@@ -1,146 +1,162 @@
 import java.util.ArrayList;
 
 public class Mastermind extends Master {
-	
+
 	protected boolean admin ;
 	protected ArrayList <Integer> code = new ArrayList <Integer>() ;
-	protected ArrayList <Boolean> tri = new ArrayList <Boolean>() ;
 	protected int taille ;
 	protected int possi ;
-	protected int trouv;
-	protected int mal;
-	
+
+
 	Mastermind(){
 		admin=true;	
 		taille =4;
 		possi = 4;
-		
-		for(int i = 0;i <taille; i++) {
-			code.add( (int)( Math.random()*(possi-1 + 1) ));
-			tri.add(true);
-		}	
-	}
+		CodeAleaInit(code,taille, possi);	
+
 	
+	}
+
 	Mastermind(int pTaille, int pPossi){
 		admin=true;	
 		taille =pTaille;
 		possi = pPossi;
+		CodeAleaInit(code,taille, possi);		
 		
-		for(int i = 0;i <taille; i++) {
-			code.add( (int)( Math.random()*(possi + 1) ));
-			tri.add(true);
-		}	
 	}
 	
+	Mastermind(int pTaille, int pPossi, boolean pAdmin){
+		admin=pAdmin;	
+		taille =pTaille;
+		possi = pPossi;
+		CodeAleaInit(code,taille, possi);		
+		
+	}
+
 	public void setAdmin(boolean pAdmin) {
-		
+
 		admin =pAdmin ;
-		
+
 		if(admin) {
-			System.out.println("\n\t Vous êtes passé en mode administarteur");
+			System.out.println("\n\t Vous êtes passé en mode administrateur");
 		}
 		else {
 			System.out.println("\n\t Vous êtes sortie du mode administrateur");
 		}	
 	}
 	
+	
+	
+public void reset() {
+		
+		CodeAlea(code,taille, possi);
+		
+	}
+	
+
+
+
 	public boolean getAdmin() {
-		
+
 		return admin;
-		
+
 	}
+
+
+
 	
-	
-	public void setCode(int[] tab) {
+public int setReponse (ArrayList <Integer> tab) {
 		
-		if (admin) {
-			if(tab.length != taille) {
-				System.out.println("\n\t Réponse de mauvaise taille");
-			}
-			else {
-				for(int i = 0; i < taille; i++){ 
-					code.set(i, tab[i]);
-				}
-			}
+		
+		return SetRep(code,tab,taille,admin);
 			
+	 
 		}
+
+	static int SetRep(ArrayList <Integer> tab1,ArrayList <Integer> tab2,int pTaille,boolean pAdmin){
 		
-		else {
-			System.out.println("\n\t Vous devez entrez en mode admin pour changer le code ");
+		int trouv = 0;
+		int mal =0 ;
+		
+		ArrayList <Boolean> tri1 = new ArrayList <Boolean>() ;
+		ArrayList <Boolean> tri2 = new ArrayList <Boolean>() ;
+		
+		for (int i=0 ; i < pTaille  ;i++) {
+			tri1.add(true);
+			tri2.add(true);
 		}
-	}
-	
-public boolean setReponse (ArrayList <Integer> tab) {
-		
-		boolean verif =false;
-		trouv = 0;
-		mal = 0;
-		
-		if (admin) {
+		int verif =0;
+
+		if (pAdmin) {
 			System.out.println("\n\t la réponse est :");
-			for(int i = 0; i<taille; i++) {
-				System.out.print(code.get(i));
+			for(int i = 0; i<pTaille; i++) {
+				System.out.print(tab1.get(i));
 			}
 		}
-		
-		if (tab.size()!= taille) {
-			
+
+		if (tab2.size()!= pTaille) {
+
 			System.out.println("\n\tMauvaise entrée ");
-			
+
 			return verif;
-			
+
+		}
+
+		System.out.println("\n\tProposition : ");
+
+		for(int i=0 ;i<pTaille;i++) {
+			System.out.print(tab2.get(i));
+		}
+
+		System.out.print(" -> Reponse : ");
+		verif = 1 ;
+
+		for(int i = 0; i < pTaille; i++){ 
+			if (tab1.get(i)==tab2.get(i) && tri1.get(i)) {
+				trouv = trouv + 1;
+				tri1.set(i, false);
+				tri2.set(i, false);
+
+			}
+
 		}
 		
-		System.out.println("\n\tProposition : ");
-			
-		for(int i=0 ;i<taille;i++) {
-			System.out.print(tab.get(i));
-			}
-			
-			System.out.print(" -> Reponse : ");
-			verif = true ;
-			
-			for(int i = 0; i < taille; i++){ 
-				if (code.get(i)==tab.get(i) && tri.get(i)) {
-					trouv = trouv + 1;
-					tri.set(i, false);
-					
+		for(int j = 0 ; j<pTaille ; j++) {
+			int i = 0;
+			while(i<pTaille && tri1.get(j)) {
+				if (tab1.get(i)==tab2.get(j) && tri2.get(i)) {
+					mal = mal + 1;
+					tri1.set(j, false);
+					tri2.set(i, false);
 				}
+				i = i + 1 ;
 				
 			}
-			
-			for(int j = 0; j < taille; j++){ 
-				for(int i = 0; i < taille; i++){ 
-					if (code.get(i)==tab.get(j) && tri.get(j)) {
-						mal = mal + 1;
-						tri.set(j, false);
-					}
-				
-				}
-				
-			}
-			if(trouv!= taille)
-				verif = false;
-				
-			for(int i = 0; i < taille; i++){ 
-				
-				tri.set(i, true);
-				
-			}
-			
-			System.out.print(" il y a "+trouv+" Bien placé et "+mal+" mal placé");
+		}
+
+		
+		if(trouv!= pTaille)
+			verif = 0;
+
+		System.out.print(" il y a "+trouv+" Bien placé et "+mal+" mal placé");
 		return verif;
- 
+
 	}
 
-static void CodeAlea(ArrayList <Integer> tab,int taille ,int  pPossi) {
+	static void CodeAlea(ArrayList <Integer> tab,int taille ,int  pPossi) {
+
+		for(int i = 0;i <taille; i++) {
+			tab.add( (int)( Math.random()*(pPossi)));
+		}	
+
+	}
 	
-	for(int i = 0;i <taille; i++) {
-		tab.add( (int)( Math.random()*(pPossi -1 + 1) ));
-	}	
 	
-}
+	
+	
 
 }
+
+
 
 
